@@ -1,0 +1,44 @@
+
+.lg-btn {
+    width:240px
+}
+
+.lg-hr {
+    width: 190px
+}
+
+.lg-register {
+    position:relative;
+    font-family: sans-serif;
+    font-weight: normal;
+    font-size: 1em;
+    /*margin-left:20px;*/
+}
+
+.lg-forgetPwd {
+    position:relative;
+    font-family: sans-serif;
+    font-weight: normal;
+    font-size: 1em;
+    margin-left:120px;
+}
+
+.lg-title {
+    margin-left:22%;
+    margin-top:1%
+}
+
+.lg-passwordImg {
+    position:absolute;
+    left:200px;
+    top:2px
+}
+
+.lg-fieldset {
+    margin-left: 43%;
+    margin-top: 14%;
+    width: 300px;
+    border-radius: 3px;
+    background-color: #FFB800;
+    box-shadow: 10px 10px 5px #888888
+}

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>信息管理系统</title>
+    <link rel="stylesheet" href="/resources/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/resources/css/iconfont.css"/>
+
+    <style type="text/css">
+        /*body,div {*/
+            /*padding: 0;*/
+            /*margin: 0;*/
+            /*width: 100%;*/
+        /*}*/
+
+        .container {
+            width: 100%;
+        }
+
+        .nav {
+            float:left;
+            width: 30%;
+            height:400px;
+            background-color: #1E9FFF;
+            transition: all 0.5s ease-out
+        }
+
+        .content {
+            display: table-cell;
+            *display:inline-block;
+            width: 2000px;
+            *width: auto;
+            height: 400px;
+            background-color: #9F9F9F;
+        }
+
+        .hide {
+            margin-left: -30%;
+        }
+
+        .body1 {
+            /*margin-left: -30%;*/
+            top: 60px;
+            bottom: 44px
+        }
+
+        .footer {
+            left:200px;
+            /*margin-left: -30%;*/
+        }
+
+    </style>
+
+    <!--<style>-->
+
+        <!--@media screen and (max-width: 750px){-->
+            <!--/*左侧导航*/-->
+            <!--.layui-layout-admin .layui-side{ left:-260px; }-->
+            <!--.site-mobile .layui-side{ left: 0; z-index:9999; }-->
+            <!--.site-tree-mobile {display: block!important; position: fixed; z-index: 100000; bottom: 15px; left: 15px; width: 50px; height: 50px; line-height: 50px; border-radius: 2px; text-align: center; background-color: rgba(0,0,0,.7); color: #fff;}-->
+            <!--.site-mobile .site-mobile-shade { content: ''; position: fixed; top: 0; bottom: 0; left: 0; right: 0; background-color: rgba(0,0,0,.8); z-index: 999;}-->
+
+            <!--/*layui-body*/-->
+            <!--.panel{ width:50%; }-->
+
+            <!--.layui-body,.layui-layout-admin .layui-footer{ left:0; }-->
+        <!--}-->
+
+    <!--</style>-->
+
+    <!--<link rel="stylesheet" href="/resources/css/layer.css"/>
+    <link rel="stylesheet" href="/resources/css/laydate.css"/>-->
+    <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+    <!--<script type="text/javascript" src="/resources/js/element.js"></script>-->
+    <script type="text/javascript" src="/resources/layui/layui.js"></script>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">信息管理系统</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+
+
+
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><img id="nav_img" src="/resources/image/菜单.png" onclick="hideSideBar()"/></li>
+            <li class="layui-nav-item"><a href="/page/map" target="myFrame">地图监控</a></li>
+            <li class="layui-nav-item"><a href="">关于我们</a></li>
+            <!--<li class="layui-nav-item"><a href="/page/toUserinfoPage" target="myFrame">用户</a></li>-->
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="/resources/image/Penguins.jpg" class="layui-nav-img">
+                    <span id="login_name"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <!--<dd><a href="">基本资料</a></dd>-->
+                    <dd><a href="/page/password" target="myFrame">密码修改</a></dd>
+                    <dd><a href="/page/login">注销</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <!--<div id="nav" lay-filter="demo">-->
+
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="layui-icon layui-icon-home" href="/page/map" target="myFrame">&nbsp;&nbsp;地图监控</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">车辆监控</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/page/vehicle" target="myFrame">整车数据</a></dd>
+                        <dd><a href="/page/motor" target="myFrame">电机数据</a></dd>
+                        <dd><a href="/page/location" target="myFrame">定位数据</a></dd>
+                        <dd><a href="/page/extreme" target="myFrame">极值数据</a></dd>
+                        <dd><a href="/page/alert" target="myFrame">报警数据</a></dd>
+                        <dd><a href="/page/state" target="myFrame">状态数据</a></dd>
+                        <dd><a href="/page/temperature" target="myFrame">温度数据</a></dd>
+                        <dd><a href="/page/voltage" target="myFrame">电压数据</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="layui-icon layui-icon-home" href="/page/search" target="myFrame">&nbsp;&nbsp;报文查询</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="layui-icon layui-icon-home" href="/page/control" target="myFrame">&nbsp;&nbsp;远程控制</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="layui-icon layui-icon-home" href="/page/update" tager="myFrame">&nbsp;&nbsp;远程升级</a>
+                </li>
+            </ul>
+
+            <!--</div> &lt;!&ndash; end nav &ndash;&gt;-->
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <!--<div style="padding: 15px;">内容主体区域</div>-->
+        <iframe name="myFrame" src="/page/index" scrolling="yes" frameborder="0" height="100%" width="100%"></iframe>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        <span>© 2018-2025 明割版权所有</span>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    var $, layer,navbar;
+    //JavaScript代码区域
+    layui.use('element','layer','jquery','navbar', function(){
+        //var element = layui.element;
+        $ = layui.jquery;
+        layer = layui.layer;
+        navbar = layui.navbar;
+       // element.init();
+    });
+    $(document).ready(function(){
+        $.ajax({
+            type: 'get',
+            url: '/user/name',
+            dataType: 'text',
+            async: false,
+            success: function(data) {
+                document.getElementById('login_name').innerHTML = data;
+            },
+            error: function() {
+                layer.msg("服务器出错，请联系管理员");
+            }
+
+        })
+    });
+
+    // navbar.set({
+    //     elem: '#nav',
+    //
+    // });
+
+    // iframe 自适应窗口大小
+    // 方法一
+
+
+    // function changeFrameHeight(){
+    //     /*var ifm= document.getElementById("myFrame");
+    //     ifm.height=document.documentElement.clientHeight;*/
+    //
+    //     document.getElementById("myFrame").height=0;
+    //     document.getElementById("myFrame").height=document.getElementById("myFrame").contentWindow.document.body.scrollHeight;
+    //
+    // }
+    // window.onresize=function(){
+    //     changeFrameHeight();
+    // }
+    var flag = false;
+    function hideSideBar() {
+        var nav = $('.layui-side');
+       // var body = $('.layui-body');
+       // var footer = $('.layui-footer');
+        nav.toggleClass('hide');
+
+        if (flag == false) {
+            $(".layui-body").animate({left:'0px'});
+            $(".layui-footer").animate({left:'0px'});
+            flag = true;
+        } else {
+            $(".layui-body").animate({left:'200px'});
+            $(".layui-footer").animate({left:'200px'});
+            flag = false;
+        }
+
+        console.log("125..." + flag);
+        // var flag = true;
+        // var i = 1;
+        // $('#nav_img').click(function(){
+        //     //这里定义一个全局变量来方便判断动画收缩的效果,也就是放在最外面
+        //     if(i == 0){
+        //         $(".layui-side").animate({width:'toggle'});
+        //         $(".layui-body").animate({left:'0px'});
+        //         $(".layui-footer").animate({left:'0px'});
+        //         i++;
+        //         console.log("隐藏:" + i);
+        //         return false;
+        //     } else {
+        //         $(".layui-side").animate({width:'toggle'});
+        //         $(".layui-body").animate({left:'18%'});
+        //         $(".layui-footer").animate({left:'200px'});
+        //         i--;
+        //         console.log("显示:" + i);
+        //         return false;
+        //     }
+        // });
+    }
+
+
+</script>
+</body>
+</html>

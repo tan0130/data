@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper通过命名空间的名称来搜索userMapeper接口,接口的方法名和id名称一致，然后执行相应的sql语句进行相应的操作 -->
+<mapper namespace = "dao.UserDAO">
+    <!-- 开启二级缓存 -->
+    <cache/>
+    <!-- 获取所有用户信息 -->
+    <select id = "getAllUser" resultType="java.util.Map">
+        select user_id, user_name, user_pwd from tb_user;
+    </select>
+
+     <!--根据id查询用户信息 -->
+    <select id = "getUserById" resultType="java.util.Map">
+        select * from tb_user where user_id = #{id};
+    </select>
+
+    <!-- 验证 id 是否存在 -->
+    <select id = "getUserById1" resultType="entity.User">
+        select * from tb_user where id = #{id};
+    </select>
+
+    <!-- 验证密码是否正确 -->
+    <select id = "getUserByIdAndPwd" resultType="entity.User">
+        select * from tb_user where user_id = #{arg0} and user_pwd = #{arg1}
+    </select>
+</mapper>
