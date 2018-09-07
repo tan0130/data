@@ -16,7 +16,7 @@
 
     <!-- 验证 id 是否存在 -->
     <select id = "getUserById1" resultType="entity.User">
-        select * from tb_user where id = #{id};
+        select * from tb_user where user_id = #{id};
     </select>
 
     <!-- 验证密码是否正确 -->

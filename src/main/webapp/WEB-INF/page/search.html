@@ -2,9 +2,249 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>报文查询</title>
+    <link rel="stylesheet" href="/resources/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/resources/css/style.css">
+    <style>
+        /*html,body {*/
+            /*width: 100%;*/
+            /*height: 100%*/
+        /*}*/
+    </style>
 </head>
 <body>
+<!--<form class="layui-form" id="toolbar">-->
+    <!--<div class="layui-form-item">-->
+        <!--<div class="layui-inline">-->
+            <!--<div class="layui-form-label">车架号</div>-->
+            <!--<div class="layui-input-inline">-->
+                <!--<input type="text" class="layui-input" id="vin"/>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="layui-inline">-->
+            <!--<label class="layui-form-label">开始时间</label>-->
+            <!--<div class="layui-input-inline">-->
+                <!--<input class="layui-input" id="start_time" placeholder="yyyy-MM-dd HH:mm:ss" type="text">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="layui-inline">-->
+            <!--<label class="layui-form-label">结束时间</label>-->
+            <!--<div class="layui-input-inline">-->
+                <!--<input class="layui-input" id="end_time" placeholder="yyyy-MM-dd HH:mm:ss" type="text">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="layui-inline">-->
+            <!--<button type="button" id="btn_search">查询</button>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</form>-->
 
+<!--<div class="demoTable" style="">-->
+    <!--搜索ID：-->
+    <!--<div class="layui-inline">-->
+        <!--<input class="layui-input" name="id" id="search_id" autocomplete="off">-->
+    <!--</div>-->
+    <!--<div class="layui-inline">-->
+        <!--<label class="layui-form-label">开始时间</label>-->
+        <!--<div class="layui-input-inline">-->
+            <!--<input class="layui-input" id="start_time" placeholder="yyyy-MM-dd HH:mm:ss" type="text">-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="layui-inline">-->
+        <!--<label class="layui-form-label">结束时间</label>-->
+        <!--<div class="layui-input-inline">-->
+            <!--<input class="layui-input" id="end_time" placeholder="yyyy-MM-dd HH:mm:ss" type="text">-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<button class="layui-btn" data-type="reload">搜索</button>-->
+<!--</div>-->
+
+<!--<script type="text/html" id="toolbar">-->
+
+       <div style="margin-top:10px">
+            <!--车架号：-->
+            <div class="layui-inline">
+                <!--<div class="layui-form-label">车架号</div>-->
+                车架号：
+                <div class="layui-input-inline">
+                    <input class="layui-input" value="LA95C86H9G1LC0001" name="id" id="search_vin" autocomplete="off" type="text">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <!--<label class="layui-form-label">开始时间</label>-->
+                开始时间：
+                <div class="layui-input-inline">
+                   <input class="layui-input" id="start_time" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <!--<label class="layui-form-label">结束时间</label>-->
+                结束时间：
+                <div class="layui-input-inline">
+                    <input class="layui-input" id="end_time" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                </div>
+            </div>
+            <button class="layui-btn" data-type="reload">搜索</button>
+       <!--</div>-->
+       <!--</div>-->
+
+    </div>
+<table class="layui-hide" id="vehicle_code" lay-filter="test"  width="100%"></table>
+
+<!--<script type="text/html" id="barDemo">-->
+    <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+<!--</script>-->
+
+
+<script src="/resources/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    layui.use(['table','form','laydate'], function(){
+        var url;
+        // var $ = layui.jquery;
+        var table = layui.table;
+        // var form = layui.form;
+        var laydate = layui.laydate;
+        table.render({
+            elem: '#vehicle_code'
+            ,url: ''
+            // ,toolbar: 'default'
+            ,title: '报文查询'
+            ,cellMinWidth: 100 // 常规单元格最小宽度
+            ,even: true
+            // ,toolbar: 'default'
+            ,defaultToolbar: ['filter','exports','print']
+            ,totalRow: true
+            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['prev','page', 'next','skip','count','limit']//自定义分页布局
+                ,groups: 10 //只显示 10 个连续页码
+                ,prev: '上一页'
+                ,next: '下一页'
+                ,first: '首页'
+                ,last: '尾页'
+                ,limits:[10,20,30,40,50]
+            }
+            ,response:{
+                statusName: 'status' //数据状态的字段名称，默认：code
+                ,statusCode: 200 //成功的状态码，默认：0
+                ,msgName: 'hint' //状态信息的字段名称，默认：msg
+                ,countName: 'total' //数据总数的字段名称，默认：count
+                ,dataName: 'rows' //数据列表的字段名称，默认：data
+            }
+            ,cols: [[
+                {type: 'checkbox',title:'序号', fixed: 'left'}
+                ,{field:'vin', title:'vin', fixed: 'left',sort: true,width:175}
+                ,{field:'server_time', title:'服务器时间',sort:true,width:168}
+                ,{field:'code_time', title:'报文时间',sort:true,width:168}
+                ,{field:'code_type', title:'报文类型'}
+                ,{field:'code_check', title:'报文校验'}
+                ,{field:'code_length', title:'报文长度'}
+                ,{field:'code_origin', title:'原始报文'}
+                ,{field:'code_vehicle', title:'整车报文'}
+                ,{field:'code_motor', title:'电机报文'}
+                ,{field:'code_location', title:'位置报文'}
+                ,{field:'code_extreme', title:'极值报文'}
+                ,{field:'code_alert', title:'报警报文'}
+                ,{field:'code_voltage', title:'电压报文'}
+                ,{field:'code_temperature', title:'温度报文',align:'right'}
+            ]]
+            // ,page: true
+            ,id: 'testReload'
+        });
+
+        //头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+            };
+        });
+
+        laydate.render({
+            elem: '#start_time'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#end_time'
+            ,type: 'datetime'
+        });
+
+        var $ = layui.$, active = {
+            reload: function(){
+                var vehicle_vin = $('#search_vin').val();
+                var start_time = $('#start_time').val();
+                var end_time = $('#end_time').val();
+                console.log(vehicle_vin + "..." + start_time + "..." + end_time);
+                var reg = "^[A-Z][A-Z0-9]{16}$";
+                if(vehicle_vin === "" || vehicle_vin === null || vehicle_vin === undefined) {
+                    // toastr.warning('请输入车架号','warning');
+                    layer.msg('请输入车架号',{icon:5});
+                    //Alert("车架号不能为空");
+                } else if(!vehicle_vin.match(reg)) {
+                    // Alert("请输入合法的车架号")
+                    layer.msg('请输入合法的车架号',{icon:5});
+                    // toastr.warning('请输入合法的车架号','warning');
+                } else if("" === start_time || null === vehicle_vin) {
+                    layer.msg('请输入开始时间',{icon:5});
+                } else if("" === end_time || null === end_time ) {
+                    layer.msg('请输入结束时间',{icon:5});
+                } else {
+
+                    //执行重载
+                    table.reload('testReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            vin: vehicle_vin,
+                            start_time: start_time,
+                            end_time: end_time
+                        },
+                        url: '/vehicle/searchCode'
+                    });
+                }
+            }
+        };
+        $('.layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听行工具事件
+        // table.on('tool(test)', function(obj){
+        //     var data = obj.data;
+        //     //console.log(obj)
+        //     if(obj.event === 'del'){
+        //         layer.confirm('真的删除行么', function(index){
+        //             obj.del();
+        //             layer.close(index);
+        //         });
+        //     } else if(obj.event === 'edit'){
+        //         layer.prompt({
+        //             formType: 2
+        //             ,value: data.email
+        //         }, function(value, index){
+        //             obj.update({
+        //                 email: value
+        //             });
+        //             layer.close(index);
+        //         });
+        //     }
+        // });
+    });
+</script>
 </body>
 </html>

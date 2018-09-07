@@ -2,9 +2,170 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>远程控制</title>
+    <link rel="stylesheet" href="/resources/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/resources/css/style.css">
+    <style>
+        /*html,body {*/
+            /*width: 100%;*/
+            /*height: 100%*/
+        /*}*/
+    </style>
 </head>
 <body>
+    <!--<div style="margin-top:10px">-->
+        <!---->
 
+
+        <!--指令：-->
+        <!--&lt;!&ndash;<div class="layui-inline">&ndash;&gt;-->
+        <!--<div class="">-->
+            <!--<select name="modules" id="list_command" title="请选择指令">-->
+                <!--<option value="AAAA登入">登入</option>-->
+                <!--<option value="AACC登出">登出</option>-->
+                <!--<option value="AADD报警">报警</option>-->
+                <!--<option value="AAEE补发">补发</option>-->
+                <!--<option value="AAFF软件版本">软件版本</option>-->
+                <!--<option value="AAGG硬件版本">硬件版本</option>-->
+                <!--<option value="AAIISD卡初始化">SD初始化</option>-->
+                <!--<option value="AAEE终端重启">终端重启</option>-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
+    <!--</div>-->
+
+<form class="layui-form" action="" style="margin-top:10px">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">车架号：</label>
+            <div class="layui-input-inline">
+                <input name="number" id="vin" lay-verify="required|number" autocomplete="off" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">指令：</label>
+            <div class="layui-input-inline">
+                <select name="city" id="listCommand">
+                    <option value="AAAA登入">登入</option>
+                    <option value="AACC登出">登出</option>
+                    <option value="AADD报警">报警</option>
+                    <option value="AAEE补发">补发</option>
+                    <option value="AAFF软件版本">软件版本</option>
+                    <option value="AAGG硬件版本">硬件版本</option>
+                    <option value="AAIISD卡初始化">SD初始化</option>
+                    <option value="AAEE终端重启">终端重启</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn btn-primary" type="button" id="send_command"  onclick="sendCommand()">发送</button>
+            <button class="layui-btn btn-primary" type="button" id="save_message" onclick="saveMessage()">保存</button>
+            <button class="layui-btn btn-primary" type="button" id="clear_message" onclick="clearMessage()">重置</button>
+        </div>
+    </div>
+</form>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">历史记录</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" style="height:100%" class="layui-textarea" id="history_message" name="desc"></textarea>
+        </div>
+    </div>
+<script type="text/javascript" src="/resources/layui/layui.js"></script>
+<script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+<script>
+
+    // 日期格式转换
+    function formateDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        if (hour >= 0 && hour <= 9) {
+            hour = "0" + hour;
+        }
+        if (minute >= 0 && minute <= 9) {
+            minute = "0" + minute;
+        }
+        if (second >= 0 && second <= 9) {
+            second = "0" + second;
+        }
+        var current_date = date.getFullYear() + seperator1 + month + seperator1 + strDate + " " + hour +
+            seperator2 + minute + seperator2 + second;
+        return current_date;
+
+    }
+
+    layui.use(['form'],function() {
+        var form = layui.form;
+        form.render();
+    });
+
+    function sendCommand() {
+        var vehicle_vin = $('#vin').val();
+        var command_code = $('#listCommand').val().substring(4);
+        // 正则表达式验证车架号输入的合法性
+        var reg = "^[A-Z][A-Z0-9]{16}";
+        if(vehicle_vin === "") {
+            //Alert("车架号不能为空");
+            layer.msg("车架号不能为空", {icon:5});
+           // toastr.warning('请输入车架号','warning');
+        } else if(!vehicle_vin.match(reg)) {
+            // Alert("请输入合法的车架号")
+            layer.msg("请输入合法的车架号", {icon:5});
+           // toastr.warning('请输入合法的车架号','warning');
+        } else if (command_code === "") {
+            // Alert("请选择指令");
+            layer.msg("请选择指令", {icon:5});
+           // toastr.warning('请选择指令','warning');
+        } else {
+            var current_time = formateDate();
+            document.getElementById('send_command').disabled = true;
+            document.getElementById('history_message').innerHTML += "\n" + current_time + ":" + command_code + " 指令已发送";
+            $.ajax({
+                type: 'post',
+                async: false,
+                dataType: 'json',
+                url: '/vehicle/sendMsg',
+                data: {
+                    vin: vehicle_vin,
+                    command: command_code
+                },
+                success: function (res) {
+                    if ("success" === res.result) {
+                        document.getElementById('send_command').disabled = false;
+                        document.getElementById('history_message').innerHTML += "\n" + current_time + ":" + command_code + " 指令已成功执行";
+                    } else {
+                        document.getElementById('send_command').disabled = false;
+                        document.getElementById('history_message').innerHTML += "\n" + current_time + ":" + command_code + " 指令已执行失败";
+                    }
+                },
+                error: function() {
+                    layer.alert('出错了 ！！！');
+                }
+            });
+        }
+    }
+
+    function saveMessage() {
+
+    }
+
+    function clearMessage() {
+
+    }
+
+</script>
 </body>
 </html>

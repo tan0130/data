@@ -5,49 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>信息管理系统</title>
     <link rel="stylesheet" href="/resources/layui/css/layui.css"/>
-    <link rel="stylesheet" href="/resources/css/iconfont.css"/>
+    <link rel="stylesheet" href="/resources/icons/iconfont.css"/>
+    <!--<link rel="stylesheet" href="/resources/css/style.css">-->
 
     <style type="text/css">
-        /*body,div {*/
-            /*padding: 0;*/
-            /*margin: 0;*/
-            /*width: 100%;*/
-        /*}*/
-
-        .container {
-            width: 100%;
-        }
-
-        .nav {
-            float:left;
-            width: 30%;
-            height:400px;
-            background-color: #1E9FFF;
-            transition: all 0.5s ease-out
-        }
-
-        .content {
-            display: table-cell;
-            *display:inline-block;
-            width: 2000px;
-            *width: auto;
-            height: 400px;
-            background-color: #9F9F9F;
-        }
-
         .hide {
-            margin-left: -30%;
-        }
-
-        .body1 {
-            /*margin-left: -30%;*/
-            top: 60px;
-            bottom: 44px
-        }
-
-        .footer {
-            left:200px;
-            /*margin-left: -30%;*/
+            margin-left: -220px;
         }
 
     </style>
@@ -121,29 +84,29 @@
 
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="layui-icon layui-icon-home" href="/page/map" target="myFrame">&nbsp;&nbsp;地图监控</a>
+                    <a class="iconfont icon-ditu" href="/page/map" target="myFrame">&nbsp;&nbsp;地图监控</a>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">车辆监控</a>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="iconfont icon-cheliang-" href="javascript:;">&nbsp;&nbsp;车辆监控</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="/page/vehicle" target="myFrame">整车数据</a></dd>
-                        <dd><a href="/page/motor" target="myFrame">电机数据</a></dd>
-                        <dd><a href="/page/location" target="myFrame">定位数据</a></dd>
-                        <dd><a href="/page/extreme" target="myFrame">极值数据</a></dd>
-                        <dd><a href="/page/alert" target="myFrame">报警数据</a></dd>
-                        <dd><a href="/page/state" target="myFrame">状态数据</a></dd>
-                        <dd><a href="/page/temperature" target="myFrame">温度数据</a></dd>
-                        <dd><a href="/page/voltage" target="myFrame">电压数据</a></dd>
+                        <dd><a class="iconfont icon-cheliang-" href="/page/vehicle" target="myFrame">&nbsp;&nbsp;整车数据</a></dd>
+                        <dd><a class="iconfont icon-cheliang-" href="/page/motor" target="myFrame">&nbsp;&nbsp;电机数据</a></dd>
+                        <dd><a class="iconfont icon-weizhi" href="/page/location" target="myFrame">&nbsp;&nbsp;定位数据</a></dd>
+                        <dd><a class="iconfont icon-cheliang-" href="/page/extreme" target="myFrame">&nbsp;&nbsp;极值数据</a></dd>
+                        <dd><a class="iconfont icon-baojing" href="/page/alert" target="myFrame">&nbsp;&nbsp;报警数据</a></dd>
+                        <dd><a class="iconfont icon-cheliangzhuangtai" href="/page/state" target="myFrame">&nbsp;&nbsp;状态数据</a></dd>
+                        <!--<dd><a class="iconfont icon-dianya" href="/page/voltage" target="myFrame">&nbsp;&nbsp;电压数据</a></dd>-->
+                        <!--<dd><a class="iconfont icon-wendu" href="/page/temperature" target="myFrame">&nbsp;&nbsp;温度数据</a></dd>-->
                     </dl>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="layui-icon layui-icon-home" href="/page/search" target="myFrame">&nbsp;&nbsp;报文查询</a>
+                    <a class="iconfont icon-sousuo" href="/page/search" target="myFrame">&nbsp;&nbsp;报文查询</a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="layui-icon layui-icon-home" href="/page/control" target="myFrame">&nbsp;&nbsp;远程控制</a>
+                    <a class="iconfont icon-zhuangtaijiankong" href="/page/control" target="myFrame">&nbsp;&nbsp;远程控制</a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="layui-icon layui-icon-home" href="/page/update" tager="myFrame">&nbsp;&nbsp;远程升级</a>
+                    <a class="iconfont icon-biaoshilei_yuanchengshengji" href="/page/update" target="myFrame">&nbsp;&nbsp;远程升级</a>
                 </li>
             </ul>
 
@@ -209,8 +172,8 @@
     //
     // }
     // window.onresize=function(){
-    //     changeFrameHeight();
-    // }
+    //     changeFrameHeight();;
+    // };
     var flag = false;
     function hideSideBar() {
         var nav = $('.layui-side');

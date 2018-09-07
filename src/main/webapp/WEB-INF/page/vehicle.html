@@ -2,9 +2,178 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>整车数据</title>
+    <link rel="stylesheet" href="/resources/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/resources/css/style.css">
+    <style>
+        html,body {
+            width: 100%;
+            /*height: 100%;*/
+            /*background: url(/resources/image/blue.jpg) no-repeat;*/
+            background-size: 100%;
+        }
+    </style>
 </head>
 <body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-left:10%;margin-top: 14%;margin-right:10%">
 
+
+<form class="layui-form" action="">
+    <div style="margin-top:10px">
+        <!--<label class="layui-form-label">车架号</label>-->
+        <!--<div class="layui-input-inline">-->
+        <!--<input name="vin" lay-verify="" autocomplete="off" placeholder="请输入车架号" class="layui-input" type="text">-->
+        <!--</div>-->
+        车架号：<input type="text" id="vin" name="vin" class="map-input" value="LA95C86H9G1LC0001" style="width:14%" placeholder="请输入车架号">
+        <button class="btn btn-primary" type="button" onclick="vehicle()">查询</button>
+    </div>
+</form>
+<div>
+    <table class="layui-table">
+        <tr>
+            <td width="30%">车速</td>
+            <td width="20%"><span id="speed_value">-</span>&nbsp;km/h</td>
+            <td width="30%">制动踏板行程值</td>
+            <td width="20%"><span id="brake_percent">-</span>&nbsp;%</td>
+        </tr>
+        <tr>
+            <td>里程</td>
+            <td><span id="mileage_value">-</span>&nbsp;km</td>
+            <td>加速踏板行程值</td>
+            <td><span id="accelerate_percent">-</span>&nbsp;%</td>
+        </tr>
+        <tr>
+            <td>档位</td>
+            <td><span id="gear_value">-</span></td>
+            <td>运行模式</td>
+            <td><span id="run_mode">-</span></td>
+        </tr>
+        <tr>
+            <td>制动状态</td>
+            <td><span id="brake_state">-</span></td>
+            <td>驱动状态</td>
+            <td><span id="accelerate_state">-</span></td>
+        </tr>
+        <tr>
+            <td>DC-DC状态</td>
+            <td><span id="DCDC_state">-</span></td>
+            <td>车辆状态</td>
+            <td><span id="vehicle_state">-</span></td>
+        </tr>
+        <tr>
+            <td>总电压</td>
+            <td><span id="total_voltage">-</span>&nbsp;V</td>
+            <td>总电流</td>
+            <td><span id="total_electricity">-</span>&nbsp;A</td>
+        </tr>
+        <tr>
+            <td>SOC</td>
+            <td><span id="soc_value">-</span>&nbsp;%</td>
+            <td>正极对地电阻</td>
+            <td><span id="resistance_value">-</span>&nbsp;Ω</td>
+        </tr>
+        <tr>
+            <td>充电状态</td>
+            <td><span id="charge_state">-</span></td>
+            <td>-</td>
+            <td>--</td>
+        </tr>
+    </table>
+</div>
+</fieldset>
+<script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/layui/layui.js"></script>
+
+<script type="text/javascript">
+    var layer;
+    layui.use(['layer'],function() {
+        layer = layui.layer;
+
+    });
+    // 自定义 toastr 参数
+    // toastr.options = {
+    //     closeButton: false,                                            // 是否显示关闭按钮，（提示框右上角关闭按钮）
+    //     debug: false,                                                    // 是否使用deBug模式
+    //     progressBar: true,                                            // 是否显示进度条，（设置关闭的超时时间进度条）
+    //     positionClass: "toast-top-center",              // 设置提示款显示的位置
+    //     onclick: null,                                                     // 点击消息框自定义事件
+    //     showDuration: "300",                                      // 显示动画的时间
+    //     hideDuration: "1000",                                     //  消失的动画时间
+    //     timeOut: "2000",                                             //  自动关闭超时时间
+    //     extendedTimeOut: "1000",                             //  加长展示时间
+    //     showEasing: "swing",                                     //  显示时的动画缓冲方式
+    //     hideEasing: "linear",                                       //   消失时的动画缓冲方式
+    //     showMethod: "fadeIn",                                   //   显示时的动画方式
+    //     hideMethod: "fadeOut"                                   //   消失时的动画方式
+    // };
+
+    // Vehicle();
+    function vehicle() {
+
+        // layui.use(['jquery','layer','toastr'], function() {
+            // $ = layui.jquery;
+            //  layer = layui.layer;
+            var vehicle_vin = $('#vin').val();
+            // 正则表达式验证车架号输入的合法性
+            var reg = "^[A-Z][A-Z0-9]{16}$";
+            if(vehicle_vin === "") {
+                // toastr.warning('请输入车架号','warning');
+                layer.msg('请输入车架号',{icon:5});
+                //Alert("车架号不能为空");
+            } else if(!vehicle_vin.match(reg)) {
+                // Alert("请输入合法的车架号")
+                layer.msg('请输入合法的车架号',{icon:5});
+                // toastr.warning('请输入合法的车架号','warning');
+            } else {
+                // console.log("123");
+                $.ajax({
+                    type: 'get',
+                    async: false,
+                    url: '/vehicle/vehicleData',
+                    dataType: 'json',
+                    data: {
+                        vin: vehicle_vin
+                    },
+                    success: function (res) {
+                        // console.log(res);
+                        // var data = JSON.stringify(res);
+                        // console.log("..." + data);
+                        handlerVehicle(res);
+                    },
+                    error: function () {
+                        layer.msg('服务器出错，请联系管理员',{icon:5})
+                    }
+
+                })
+            }
+
+        // });
+
+    }
+    function handlerVehicle(res) {
+        var data = res[0];
+        document.getElementById('speed_value').innerHTML = data.speed_value;
+        document.getElementById('brake_percent').innerHTML = data.brake_percent;
+        document.getElementById('mileage_value').innerHTML = data.mileage_value;
+        document.getElementById('accelerate_percent').innerHTML = data.accelerate_percent;
+        document.getElementById('gear_value').innerHTML = data.gear_value;
+        document.getElementById('run_mode').innerHTML = data.run_mode;
+        document.getElementById('brake_state').innerHTML = data.brake_state;
+        document.getElementById('accelerate_percent').innerHTML = data.accelerate_percent;
+        document.getElementById('DCDC_state').innerHTML = data.DCDC_state;
+        document.getElementById('vehicle_state').innerHTML = data.vehicle_state;
+        document.getElementById('total_voltage').innerHTML = data.total_voltage;
+        document.getElementById('total_electricity').innerHTML = data.total_electricity;
+        document.getElementById('soc_value').innerHTML = data.soc_value;
+        document.getElementById('resistance_value').innerHTML = data.resistance_value;
+        document.getElementById('charge_state').innerHTML = data.charge_state;
+
+        setTimeout(function() {
+            vehicle();
+            console.log("再次执行");
+        },30000);
+    }
+</script>
 </body>
 </html>

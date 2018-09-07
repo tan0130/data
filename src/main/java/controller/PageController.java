@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
  * 页面跳转
  **/
 @Controller
-@RequestMapping(value="/page")
+@RequestMapping(value = "/page")
 public class PageController {
 
     /**
      * 跳转 login 登录页面
      * */
-    @RequestMapping(value="/login")
+    @RequestMapping(value = "/login")
     public void toLoginPage(HttpServletRequest request, HttpServletResponse response) throws Exception{
         request.getRequestDispatcher("/login.html").forward(request, response);
     }
@@ -25,7 +25,7 @@ public class PageController {
     /**
      * 跳转 admin 用户操作页面
      * */
-    @RequestMapping(value="/admin")
+    @RequestMapping(value = "/admin")
     public String toAdminPage() {
         return "admin/admin";
     }
@@ -33,7 +33,7 @@ public class PageController {
     /**
      * 跳转 index 首页
      * */
-    @RequestMapping(value="/index")
+    @RequestMapping(value = "/index")
     public String toIndexPage() {
         return "index/index";
     }
@@ -41,47 +41,47 @@ public class PageController {
     /**
      * 跳转 map 地图监控页面
      * */
-    @RequestMapping(value="/map")
+    @RequestMapping(value = "/map")
     public String toMapPage() {
         return "page/map";
     }
 
     /**
-     * 跳转 vehicle 整车数据页面
+     * 跳转 Vehicle 整车数据页面
      * */
-    @RequestMapping(value="/vehicle")
+    @RequestMapping(value = "/vehicle")
     public String toVehiclePage() {
         return "page/vehicle";
     }
 
     /**
-     * 跳转 motor 电机数据页面
+     * 跳转 Motor 电机数据页面
      * */
-    @RequestMapping(value="/motor")
+    @RequestMapping(value = "/motor")
     public String toMotorPage() {
         return "page/motor";
     }
 
     /**
-     * 跳转 location 位置信息页面
+     * 跳转 Location 位置信息页面
      * */
-    @RequestMapping(value="/location")
+    @RequestMapping(value = "/location")
     public String toLocationPage() {
         return "page/location";
     }
 
     /**
-     * 跳转 extreme 极值数据页面
+     * 跳转 Extreme 极值数据页面
      * */
-    @RequestMapping(value="/extreme")
+    @RequestMapping(value = "/extreme")
     public String toExtremePage() {
         return "page/extreme";
     }
 
     /**
-     * 跳转 alert 报警数据页面
+     * 跳转 Alert 报警数据页面
      * */
-    @RequestMapping(value="/alert")
+    @RequestMapping(value = "/alert")
     public String toAlertPage() {
         return "page/alert";
     }
@@ -89,7 +89,7 @@ public class PageController {
     /**
      * 跳转 state 状态数据页面
      * */
-    @RequestMapping(value="/state")
+    @RequestMapping(value = "/state")
     public String toStatePage() {
         return "page/state";
     }
@@ -97,23 +97,23 @@ public class PageController {
     /**
      * 跳转 temperature 温度数据页面
      * */
-    @RequestMapping(value="/temperature")
+    @RequestMapping(value = "/temperature")
     public String toTemperaturePage() {
-        return "page/temperature";
+        return "/WEB-INF/page/temperature.htmlbak";
     }
 
     /**
      * 跳转 voltage 电压数据页面
      * */
-    @RequestMapping(value="/voltage")
+    @RequestMapping(value = "/voltage")
     public String toVoltagePage() {
-        return "page/voltage";
+        return "/WEB-INF/page/voltage.htmlbak";
     }
 
     /**
      * 跳转 control 远程控制页面
      * */
-    @RequestMapping(value="/control")
+    @RequestMapping(value = "/control")
     public String toControlPage() {
         return "page/control";
     }
@@ -121,7 +121,7 @@ public class PageController {
     /**
      * 跳转 update 远程控制页面
      * */
-    @RequestMapping(value="/update")
+    @RequestMapping(value = "/update")
     public String toUpdatePage() {
         return "page/update";
     }
@@ -129,7 +129,7 @@ public class PageController {
     /**
      * 跳转 search 历史报文查询页面
      * */
-    @RequestMapping(value="/search")
+    @RequestMapping(value = "/search")
     public String toSearchPage() {
         return "page/search";
     }
@@ -137,7 +137,7 @@ public class PageController {
     /**
      * 跳转 about 关于我们页面
      * */
-    @RequestMapping(value="/about")
+    @RequestMapping(value = "/about")
     public String toAboutPage() {
         return "page/about";
     }
@@ -145,8 +145,16 @@ public class PageController {
     /**
      * 跳转 password 棉麻修改页面
      * */
-    @RequestMapping(value="/password")
+    @RequestMapping(value = "/password")
     public String toPasswordPage() {
         return "page/password";
+    }
+
+    /**
+     * 跳转 register 用户注册界面
+     * */
+    @RequestMapping(value = "/register")
+    public String toRegisterPage() {
+        return "page/register";
     }
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper通过命名空间的名称来搜索 vehicleDAO 接口,接口的方法名和id名称一致，然后执行相应的sql语句进行相应的操作 -->
+<mapper namespace = "dao.VehicleDAO">
+    <!-- 开启二级缓存 -->
+    <!--<cache/>-->
+    <!-- 查询车辆历史报文信息 -->
+    <select id = "getVehicleHistoryCode" resultType="java.util.Map">
+        select * from tb_history where vin = #{arg0} and server_time between #{arg1} and #{arg2} limit  #{arg3} , #{arg4}
+        <!--<where>-->
+            <!--<if test="vin != null">-->
+                <!--and vin = #{arg2}-->
+            <!--</if>-->
+            <!--<if test="start_time != null adn end_time != null">-->
+                <!--and server_time between #{arg1} and #{arg2}-->
+            <!--</if>-->
+        <!--</where>-->
+        <!--<if test="page != null and limit != null">-->
+            <!--limit #{arg3},#{arg4}-->
+        <!--</if>-->
+    </select>
+
+    <!--根据车架号查询报文记录 -->
+    <select id = "getCountByVin" parameterType="String" resultType="int">
+        select count(vin) from tb_history where vin = #{vin};
+    </select>
+
+    <!-- 查询整车数据信息 -->
+    <select id = "getVehicleByVin" parameterType="String" resultType="java.util.Map">
+       select * from tb_vehicle where vin = #{vin}
+    </select>
+
+    <!-- 查询电机数据信息 -->
+    <select id = "getMotorByVin" parameterType="String" resultType="java.util.Map">
+       select * from tb_motor where vin = #{vin}
+    </select>
+
+    <!-- 查询位置数据信息 -->
+    <select id = "getLocationByVin" parameterType="String" resultType="java.util.Map">
+       select * from tb_location where vin = #{vin}
+    </select>
+
+    <!-- 查询极值数据信息 -->
+    <select id = "getExtremeByVin" parameterType="String" resultType="java.util.Map">
+       select * from tb_extreme where vin = #{vin}
+    </select>
+
+    <!-- 查询报警数据信息 -->
+    <select id = "getAlertByVin" parameterType="String" resultType="java.util.Map">
+       select * from tb_alert where vin = #{vin}
+    </select>
+
+    <!-- 查询状态数据信息 -->
+    <select id = "getStateByVin" parameterType="String" resultType="java.util.Map">
+       select * from tb_state where vin = #{vin}
+    </select>
+
+</mapper>

@@ -16,7 +16,7 @@ public class LoginIntercepter implements HandlerInterceptor {
         // 获取 session 中保存登录 id 的值
 
        Object id = httpServletRequest.getSession().getAttribute("loginId");
-       //System.out.println("id:" + id);
+//       System.out.println("id:" + id);
         if (id == null) {
             //System.out.println("尚未登录，调到登录页面");
             httpServletResponse.sendRedirect("/login.html");

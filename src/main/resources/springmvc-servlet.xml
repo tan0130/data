@@ -35,5 +35,4 @@
             <bean class="interceptor.LoginIntercepter"/>
         </mvc:interceptor>
     </mvc:interceptors>
-
 </beans>

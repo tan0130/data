@@ -24,15 +24,6 @@
                     </div>
                 </div>
 
-                <!-- 暗文密码输入框 -->
-                <!--<div class="layui-form-item">-->
-                    <!--<div class="layui-input-inline" id="pswd_invisible" style="display:none">-->
-                        <!--<input type="password" name="password" id="input_invisible" lay-verify="required" autocomplete="off"-->
-                               <!--placeholder="请输入密码" class="layui-input"/>-->
-                        <!--<img id="invisible" onclick="showPswd()" src="/resources/image/眼睛-闭.png">-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!-- 明文密码输入框 -->
                 <div class="layui-form-item">
                     <div class="layui-input-inline" id="pswd_visible">
                         <input type="password" name="password" id="demo_input" lay-verify="required" autocomplete="off"
@@ -45,7 +36,7 @@
                     <button lay-submit lay-filter="login" class="layui-btn lg-btn">登录</button>
                 </div>
                 <hr class="lg-hr"/>
-                <p><a href="/page/toRegisterPage" class="lg-register">立即注册</a><a href="javascript:;"
+                <p><a href="/page/register" class="lg-register">立即注册</a><a href="javascript:;"
                                                                          class="lg-forgetPwd">忘记密码?</a>
             </form>
         </div>
@@ -60,18 +51,17 @@
             // 操作对象
             var form = layui.form;
             $ = layui.jquery;
-            var id = $('#id').val();
-            var password = $('#password').val();
 
             form.on('submit(login)',function(res) {
-                console.log(id + '...' + password);
+                console.log("chaxun");
                 $.ajax({
                     url: '/user/login',
-                    type: 'post',
+                    type: 'get',
                     async: false,
                     dataType: 'json',
                     data: res.field,
                     success: function(data) {
+                        console.log(data);
                         if (data.result == "wrongId") {
                             layer.msg("用户不存在",{icon:5});
                         } else if (data.result == "wrongPassword") {
@@ -79,11 +69,11 @@
                         } else if (data.result == "true") {
                             window.location.href = "/page/admin";
                         } else {
-                            layer.msg("服务器错误，请联系管理员");
+                            layer.msg("登录失败");
                         }
                     }
                     ,error: function() {
-                        layer.msg("服务器错误，请联系管理员");
+                        layer.msg("服务器错误，请联系管理员1");
                     }
                 });
                 return false;

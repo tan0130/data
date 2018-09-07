@@ -143,7 +143,6 @@ public class UserController {
     public String check(int id, String password, HttpServletRequest request, HttpServletResponse response) throws Exception{
         ConcurrentHashMap<String,String> map = new ConcurrentHashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
-
         // 允许跨域访问
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         response.setHeader("Access-Control-Allow-Credentials", "true");
@@ -162,6 +161,7 @@ public class UserController {
                 return objectMapper.writeValueAsString(map);
             } else {
                 map.put("result","true");
+//                System.out.println("true");
                 String userName = userService.getUserById1(id).getUser_name();
                 request.getSession().setAttribute("loginId", id);
                 request.getSession().setAttribute("loginName", userName);
@@ -177,7 +177,7 @@ public class UserController {
     /**
      * 获取登录名
      * */
-    @RequestMapping(value = "/name")
+    @RequestMapping(value = "/name", produces = "application/json; charset=utf-8")
     @ResponseBody
     public String getLoginName(HttpServletRequest request) {
         return (String)request.getSession().getAttribute("loginName");

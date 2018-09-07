@@ -2,9 +2,94 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>远程升级</title>
+    <link rel="stylesheet" href="/resources/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/resources/css/style.css">
 </head>
 <body>
+<form class="layui-form" style="margin-top:10px">
+   <div class="layui-form-item">
+       <div class="layui-inline">
+           <div class="layui-form-label">车架号：</div>
+           <div class="layui-input-inline">
+                <input id="vin" class="layui-input"/>
+           </div>
+       </div>
+       <div class="layui-inline">
+           <label class="layui-form-label">指令：</label>
+           <div class="layui-input-inline">
+               <select name="city1" id="listCommand1">
+                   <option value="AAAA登入">登入</option>
+                   <option value="AACC登出">登出</option>
+                   <option value="AADD报警">报警</option>
+                   <option value="AAEE补发">补发</option>
+                   <option value="AAFF软件版本">软件版本</option>
+                   <option value="AAGG硬件版本">硬件版本</option>
+                   <option value="AAIISD卡初始化">SD初始化</option>
+                   <option value="AAEE终端重启">终端重启</option>
+               </select>
+           </div>
+       </div>
+       <div class="layui-inline">
+           <button class="layui-btn btn-primary" type="button" id="upload_file" ><i class="layui-icon layui-icon-file"></i>上传</button>
+           <button class="layui-btn btn-primary" type="button" id="send_message" onclick="sendMessage()">发送</button>
+           <button class="layui-btn btn-primary" type="button" id="save_message" onclick="saveMessage()">保存</button>
+           <button class="layui-btn btn-primary" type="button" id="clear_message" onclick="clearMessage()">重置</button>
+       </div>
+   </div>
+</form>
+<div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">历史记录</label>
+    <div class="layui-input-block">
+        <textarea placeholder="请输入内容" class="layui-textarea" id="history_message"></textarea>
+    </div>
+</div>
+<script src="/resources/js/jquery.min.js"></script>
+<script src="/resources/layui/layui.js"></script>
+<script>
+    layui.use(['upload','element','form'],function() {
+        var $ = layui.jquery;
+        var form = layui.form;
+        var element = layui.element;
+        var upload = layui.upload;
+        element.render();
+        // 上传文件
+        upload.render({
+            elem: '#upload_file'
+            ,url: '/vehicle/upload'
+            ,accept: 'file'
+            ,done: function(res) {
+                console.log(res);
+            }
+        });
 
+    })
+
+    function saveMessage() {
+        var history_message = $('#history_message').val();
+        $.ajax({
+            type: 'get',
+            async: false,
+            url: '/vehicle/saveMessage',
+            data: {
+                history_message: history_message
+            },
+            success: function(res) {
+                console.log(res);
+            }
+        })
+    }
+
+    function sendMessage() {
+
+    }
+
+    function clearMessage() {
+        console.log('123');
+        document.getElementById('history_message').innerHTML = "";
+        console.log('清除成功');
+    }
+</script>
 </body>
 </html>
