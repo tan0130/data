@@ -57,4 +57,14 @@ public class VehicleServiceImpl implements VehicleService{
     public List<State> getStateByVin(String vin) {
         return vehicleDAO.getStateByVin(vin);
     }
+
+    @Override
+    public List<Location> getAllMapLocation() {
+        return vehicleDAO.getAllMapLocation();
+    }
+
+    @Override
+    public List<Location> getAllMapLocationByVin(String vin) {
+        return vehicleDAO.getAllMapLocationByVin(vin);
+    }
 }

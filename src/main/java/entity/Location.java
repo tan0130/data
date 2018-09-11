@@ -9,11 +9,13 @@ import javax.persistence.Entity;
 @Entity
 public class Location {
     private String gps_state;
+    private String vehicle_state;
     private String longitude_value;
     private String latitude_value;
 
-    public Location(String gps_state, String longitude_value, String latitude_value) {
+    public Location(String gps_state, String vehicle_state, String longitude_value, String latitude_value) {
         this.gps_state = gps_state;
+        this.vehicle_state = vehicle_state;
         this.longitude_value = longitude_value;
         this.latitude_value = latitude_value;
     }
@@ -24,6 +26,14 @@ public class Location {
 
     public void setGps_state(String gps_state) {
         this.gps_state = gps_state;
+    }
+
+    public String getVehicle_state() {
+        return vehicle_state;
+    }
+
+    public void setVehicle_state(String vehicle_state) {
+        this.vehicle_state = vehicle_state;
     }
 
     public String getLongitude_value() {
@@ -46,6 +56,7 @@ public class Location {
     public String toString() {
         return "Location{" +
                 "gps_state='" + gps_state + '\'' +
+                ", vehicle_state='" + vehicle_state + '\'' +
                 ", longitude_value='" + longitude_value + '\'' +
                 ", latitude_value='" + latitude_value + '\'' +
                 '}';

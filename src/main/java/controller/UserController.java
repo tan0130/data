@@ -2,6 +2,9 @@ package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -10,7 +13,9 @@ import service.UserService;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -24,6 +29,11 @@ public class UserController {
     // 注入 service
     @Resource(name = "UserService")
     private UserService userService;
+
+    /**
+     * 添加日志记录，写入数据库
+     * */
+    private static Logger logger = LogManager.getLogger(UserController.class);
 
     /**
      * 查询所有用户信息
@@ -165,6 +175,9 @@ public class UserController {
                 String userName = userService.getUserById1(id).getUser_name();
                 request.getSession().setAttribute("loginId", id);
                 request.getSession().setAttribute("loginName", userName);
+                ThreadContext.put("userId",String.valueOf(id));
+                ThreadContext.put("userName",userName);
+                logger.info("用户登录成功");
                 return objectMapper.writeValueAsString(map);
             }
         } catch (Exception e) {
@@ -182,4 +195,75 @@ public class UserController {
     public String getLoginName(HttpServletRequest request) {
         return (String)request.getSession().getAttribute("loginName");
     }
+
+    /**
+     * 修改密码
+     * */
+    @RequestMapping(value = "/register")
+    @ResponseBody
+    public String registerUser(User user,HttpServletRequest request) throws Exception{
+        //System.out.println("添加用户信息");
+        Map<String, Object> map = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            userService.registerUser(user);
+            Thread.currentThread().sleep(3000);
+//            int id = userService.getUserByUserName(user.getUser_name()).getUser_id();
+
+            int id = (int)request.getSession().getAttribute("logId");
+
+            map.put("result","success");
+            map.put("id",id);
+            ThreadContext.put("userId",String.valueOf(id));
+            ThreadContext.put("userName",user.getUser_name());
+            logger.info("用户注册成功");
+            System.out.print(mapper.writeValueAsString(map));
+            return  mapper.writeValueAsString(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        map.put("result","fail");
+        return mapper.writeValueAsString(map);
+    }
+
+
+    /**
+     * 修改密码
+     * @param oldPassword 用户旧密码
+     * @param newPassword 用户新密码
+     * @param request 用户获取 session 对象
+     * */
+    @RequestMapping(value = "/updatePassword")
+    @ResponseBody
+    public String updatePassword(User user ,String oldPassword, String newPassword, HttpServletRequest request) {
+        System.out.println("修改密码");
+        int id = 0;
+        try {
+            if (null != request.getSession().getAttribute("loginId")) {
+                id = (Integer)request.getSession().getAttribute("loginId");
+                System.out.println("id:" + id);
+                if (null != userService.getUserByIdAndPwd(id, oldPassword)) {
+                    user.setUser_id(id);
+                    user.setUser_pwd(newPassword);
+                    System.out.println(user);
+                    userService.updatePassword(user);
+                    ThreadContext.put("userId",String.valueOf(id));
+                    ThreadContext.put("userName",userService.getUserById1(id).getUser_name());
+                    logger.info("用户密码修改成功");
+                    return "success";
+                } else {
+                    return "wrongPassword";
+                }
+            } else {
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "fail";
+    }
+
+
 }

@@ -55,4 +55,13 @@
        select * from tb_state where vin = #{vin}
     </select>
 
+    <!-- 查询所有车辆的地图监控信息 -->
+    <select id = "getAllMapLocation" resultType="java.util.Map">
+       select vin,longitude_value,latitude_value,vehicle_state from tb_location;
+    </select>
+
+    <!-- 查询单辆车辆地图监控信息 -->
+    <select id = "getAllMapLocationByVin" parameterType="String" resultType="java.util.Map">
+       select vin,longitude_value,latitude_value,vehicle_state from tb_location where vin = #{vin}
+    </select>
 </mapper>

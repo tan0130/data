@@ -38,4 +38,19 @@ public class UserServiceImpl implements UserService{
     public User getUserByIdAndPwd(int id, String password) {
         return userDAO.getUserByIdAndPwd(id, password);
     }
+
+    @Override
+    public void registerUser(User user) {
+        userDAO.registerUser(user);
+    }
+
+    @Override
+    public void updatePassword(User user) {
+        userDAO.updatePassword(user);
+    }
+
+    @Override
+    public User getUserByUserName(String user_name) {
+        return userDAO.getUserByUserName(user_name);
+    }
 }

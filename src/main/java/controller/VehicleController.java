@@ -2,7 +2,6 @@ package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.*;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,26 +33,38 @@ public class VehicleController {
     private VehicleService vehicleService;
 
     /**
-     * 查询整车信息
+     * 地图监控，查询所有车辆位置及状态
      * */
-    @RequestMapping(value = "/vehicle")
+    @RequestMapping(value = "/allMap",produces = "application/json; charset=utf-8")
     @ResponseBody
-    public String vehicle(String vin) {
-        System.out.println(vin);
-        String json = "{\"v01\": 100,\"v02\":100,\"v03\":100,\"v04\":100,\"v05\":100,\"v06\":100,\"v07\":100," +
-                "\"v08\":100,\"v09\":100,\"v10\":100,\"v11\":100,\"v12\":100,\"v13\":100,\"v14\":100,\"v15\":100,\"v16\":100}";
-        System.out.println(json);
-        return json;
+    public String allMap() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            List<Location> locationList = vehicleService.getAllMapLocation();
+            return mapper.writeValueAsString(locationList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     /**
-     * 查询电机信息
+     * 地图监控，根据车架号查询所有车辆位置及状态
+     * @param vin 要查询的车架号
      * */
-    @RequestMapping(value = "/motor")
+    @RequestMapping(value = "/vinMap",produces = "application/json; charset=utf-8")
     @ResponseBody
-    public void motor(String vin) {
-        System.out.println(vin);
+    public String allMap(String vin) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            List<Location> locationList = vehicleService.getAllMapLocationByVin(vin);
+            return mapper.writeValueAsString(locationList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
+
 
     /**
      * 远程控制发送指令
@@ -61,7 +72,7 @@ public class VehicleController {
     @RequestMapping(value = "/sendMsg")
     @ResponseBody
     public String sendMsg(String vin, String command) throws Exception{
-        System.out.println(vin + "..." + command);
+//        System.out.println(vin + "..." + command);
         ConcurrentHashMap<String, Object> concurrentHashMap = new ConcurrentHashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
         Thread.sleep(5000);

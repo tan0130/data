@@ -58,4 +58,15 @@ public interface VehicleService {
      * @param vin 传入要查询的车架号
      * */
     List<State> getStateByVin(String vin);
+
+    /**
+     * 查看地图监控数据的所有车辆数据
+     * */
+    List<Location> getAllMapLocation();
+
+    /**
+     * 查看地图监控数据的单辆车辆数据
+     * @param vin 传入要查询的车架号
+     * */
+    List<Location> getAllMapLocationByVin(String vin);
 }

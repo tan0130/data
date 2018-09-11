@@ -6,6 +6,15 @@
     <title>登录界面</title>
     <link rel="stylesheet" href="/resources/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/resources/css/style.css">
+    <style>
+        html,body {
+            width: 100%;
+            /*height: 100%;*/
+            /*background: url(/resources/image/blue.jpg) no-repeat;*/
+            background-size: 100%;
+            background-color: #eee;
+        }
+    </style>
 </head>
 <body>
 <fieldset class="ayui-field-title lg-fieldset">
@@ -36,9 +45,10 @@
                     <button lay-submit lay-filter="login" class="layui-btn lg-btn">登录</button>
                 </div>
                 <hr class="lg-hr"/>
-                <p><a href="/page/register" class="lg-register">立即注册</a><a href="javascript:;"
-                                                                         class="lg-forgetPwd">忘记密码?</a>
+                <p><a href="/page/register" class="lg-register">立即注册</a><a href="javascript:;" class="lg-forgetPwd">忘记密码?</a>
             </form>
+            <!--<hr class="lg-hr"/>-->
+            <!--<p><a href="/page/register" class="lg-register">立即注册</a><a href="javascript:;" class="lg-forgetPwd">忘记密码?</a>-->
         </div>
     </div>
 </fieldset>
@@ -53,7 +63,7 @@
             $ = layui.jquery;
 
             form.on('submit(login)',function(res) {
-                console.log("chaxun");
+                // console.log("chaxun");
                 $.ajax({
                     url: '/user/login',
                     type: 'get',
@@ -62,11 +72,11 @@
                     data: res.field,
                     success: function(data) {
                         console.log(data);
-                        if (data.result == "wrongId") {
+                        if (data.result === "wrongId") {
                             layer.msg("用户不存在",{icon:5});
-                        } else if (data.result == "wrongPassword") {
+                        } else if (data.result === "wrongPassword") {
                             layer.msg("密码不正确",{icon:5});
-                        } else if (data.result == "true") {
+                        } else if (data.result === "true") {
                             window.location.href = "/page/admin";
                         } else {
                             layer.msg("登录失败");
@@ -95,7 +105,7 @@
         var demoImg = document.getElementById('demo_img');
         var demoInput = document.getElementById('demo_input');
         function showPswd() {
-            if (demoInput.type == "password") {
+            if (demoInput.type === "password") {
                  demoInput.type = 'text';
                 demoImg.src = "/resources/image/眼睛-闭.png";
                 // eye.className = "visible";
