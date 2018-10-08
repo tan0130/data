@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>加密</title>
+</head>
+<body>
+
+<script src="/resources/js/aes.js"></script>
+<script src="/resources/js/crypto-js.js"></script>
+<script>
+    var key = CryptoJS.enc.Utf8.parse("8NONwyJtHesysWpM");
+    var plaintText = 'ABCDEF'; // 明文
+    var encryptedData = CryptoJS.AES.encrypt(plaintText,key,{
+        mode:CryptoJS.mode.ECB,
+        padding:CryptoJS.pad.Pkcs7
+    });
+    console.log("加密前：" + plaintText);
+    console.log("加密后：" + encryptedData);
+</script>
+</body>
+</html>

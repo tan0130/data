@@ -8,14 +8,14 @@
     <select id = "getVehicleHistoryCode" resultType="java.util.Map">
         select * from tb_history where vin = #{arg0} and server_time between #{arg1} and #{arg2} limit  #{arg3} , #{arg4}
         <!--<where>-->
-            <!--<if test="vin != null">-->
+            <!--<if testini="vin != null">-->
                 <!--and vin = #{arg2}-->
             <!--</if>-->
-            <!--<if test="start_time != null adn end_time != null">-->
+            <!--<if testini="start_time != null adn end_time != null">-->
                 <!--and server_time between #{arg1} and #{arg2}-->
             <!--</if>-->
         <!--</where>-->
-        <!--<if test="page != null and limit != null">-->
+        <!--<if testini="page != null and limit != null">-->
             <!--limit #{arg3},#{arg4}-->
         <!--</if>-->
     </select>

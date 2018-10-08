@@ -15,6 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 public class PageController {
 
     /**
+     * 跳转 check 短信验证页面
+     * */
+    @RequestMapping(value="/check")
+    public String toCheckPage() {
+       return "page/check";
+    }
+
+    /**
      * 跳转 login 登录页面
      * */
     @RequestMapping(value = "/login")

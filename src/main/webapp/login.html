@@ -18,7 +18,7 @@
 </head>
 <body>
 <fieldset class="ayui-field-title lg-fieldset">
-    <div style="margin-left: 8%">
+    <div style="margin-left: 8%;margin-right:8%">
     <!-- 标题 -->
         <div class="layui-field-title lg-title">
             <h1>欢迎登录</h1>
@@ -53,7 +53,19 @@
     </div>
 </fieldset>
     <script type="text/javascript" src="/resources/layui/layui.js"></script>
+<script src="/resources/js/aes.js"></script>
+<script src="/resources/js/crypto-js.js"></script>
     <script type="text/javascript">
+
+        var key = CryptoJS.enc.Utf8.parse("8NONwyJtHesysWpM");
+        var plaintText = 'ABCDEF'; // 明文
+        // var encryptedData = CryptoJS.AES.encrypt(plaintText,key,{
+        //     mode:CryptoJS.mode.ECB,
+        //     padding:CryptoJS.pad.Pkcs7
+        // });
+        //  console.log("加密前：" + plaintText);
+        //  console.log("加密后：" + encryptedData);
+
 
         var $;
 
@@ -64,12 +76,34 @@
 
             form.on('submit(login)',function(res) {
                 // console.log("chaxun");
+                // console.log(res.field.id);
+                // console.log(res.field.password);
+
+                var loginId = res.field.id;
+                console.log(loginId);
+
+                var encryptId = CryptoJS.AES.encrypt(loginId,key,{
+                    mode:CryptoJS.mode.ECB,
+                    padding:CryptoJS.pad.Pkcs7
+                });
+                var loginPwd = res.field.password;
+                console.log(loginPwd);
+                var encryptPwd = CryptoJS.AES.encrypt(loginPwd,key,{
+                    mode:CryptoJS.mode.ECB,
+                    padding:CryptoJS.pad.Pkcs7
+                });
+                console.log("登录名：" + encryptId);
+                console.log("密码：" + encryptPwd);
                 $.ajax({
                     url: '/user/login',
                     type: 'get',
                     async: false,
                     dataType: 'json',
-                    data: res.field,
+                    // data: res.field,
+                    data: {
+                        id: encryptId.toString(),
+                        password: encryptPwd.toString()
+                    },
                     success: function(data) {
                         console.log(data);
                         if (data.result === "wrongId") {
@@ -83,7 +117,7 @@
                         }
                     }
                     ,error: function() {
-                        layer.msg("服务器错误，请联系管理员1");
+                        layer.msg("服务器错误，请联系管理员");
                     }
                 });
                 return false;

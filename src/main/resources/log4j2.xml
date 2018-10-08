@@ -12,7 +12,7 @@
         </console>
 
         <!-- 日志文件打印出所有信息,这个log每次运行都会自动清空,由append属性决定，适合临时测试用 -->
-        <!--<File name="textlog" fileName="log/test.log" append="false">-->
+        <!--<File name="textlog" fileName="log/testini.log" append="false">-->
             <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>-->
         <!--</File>-->
 

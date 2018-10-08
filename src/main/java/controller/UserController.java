@@ -2,6 +2,8 @@ package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.User;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
@@ -9,14 +11,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import service.UserService;
+import sun.misc.BASE64Decoder;
 
 import javax.annotation.Resource;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+//import static com.sun.deploy.util.ArgumentParsingUtil.base64Encode;
 
 /**
  * create by 1311230692@qq.com on 2018/8/31 13:35
@@ -25,6 +33,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Controller
 @RequestMapping(value="/user")
 public class UserController {
+
+    // 密钥(需前后端保持一致)
+    private static final String KEY = "8NONwyJtHesysWpM";
+    // 算法
+    private static final String ALGORITHMSTR = "AES/ECB/PKCS5Padding";
 
     // 注入 service
     @Resource(name = "UserService")
@@ -142,6 +155,8 @@ public class UserController {
         }
     }
 
+
+
     /**
      * 校验用户是否存在，密码是否正确
      * @param id 传入 id
@@ -150,7 +165,17 @@ public class UserController {
      * */
     @RequestMapping(value = "/login")
     @ResponseBody
-    public String check(int id, String password, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public String check(String id, String password, HttpServletRequest request, HttpServletResponse response) throws Exception{
+
+        // 数据加密和解密
+        int decryptId = Integer.parseInt(aes.SescurityPwd.aesDecrypt(id,KEY));
+//        System.out.println("加密后的id为：" + id);
+//        System.out.println("解密后的id为：" + decryptId);
+
+        String decryptPwd =  aes.SescurityPwd.aesDecrypt(password,KEY);
+//        System.out.println("加密后的password为：" + password);
+//        System.out.println("解密后的password为：" + decryptPwd);
+
         ConcurrentHashMap<String,String> map = new ConcurrentHashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
         // 允许跨域访问
@@ -163,19 +188,19 @@ public class UserController {
             response.addHeader("Access-Control-Max-Age", "120");
         }
         try {
-            if (null == userService.getUserById1(id)) {
-                map.put("result","wringId");
+            if (null == userService.getUserById1(decryptId)) {
+                map.put("result","wrongId");
                 return objectMapper.writeValueAsString(map);
-            } else if (null == userService.getUserByIdAndPwd(id, password)) {
+            } else if (null == userService.getUserByIdAndPwd(decryptId, decryptPwd)) {
                 map.put("result","wrongPassword");
                 return objectMapper.writeValueAsString(map);
             } else {
                 map.put("result","true");
 //                System.out.println("true");
-                String userName = userService.getUserById1(id).getUser_name();
+                String userName = userService.getUserById1(decryptId).getUser_name();
                 request.getSession().setAttribute("loginId", id);
                 request.getSession().setAttribute("loginName", userName);
-                ThreadContext.put("userId",String.valueOf(id));
+                ThreadContext.put("userId",String.valueOf(decryptId));
                 ThreadContext.put("userName",userName);
                 logger.info("用户登录成功");
                 return objectMapper.writeValueAsString(map);
