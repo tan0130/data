@@ -5,9 +5,90 @@
     <title>短信验证</title>
 </head>
 <body>
-    手机号：<input type="tel" placeholder="请输入手机号" style="width:120px;height:25px"/>
+    手机号：<input type="tel" id="phone" placeholder="请输入手机号" style="width:120px;height:25px"/>
     <button type="button" onclick="sendMsg()">发送验证码</button><br/>
-    验证码：<input type="text" placeholder="请输入验证码" style="width:120px;height:25px"/>
+    验证码：<input type="text" id="code" placeholder="请输入验证码" style="width:120px;height:25px"/>
     <button type="button" onclick="checkMsg()">校验验证码</button>
+
+    <input type="text" style="width: 120px;"/>
+
+    <button type="button" onclick="touch()">点我</button>
+
+<script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+<script>
+
+    function touch() {
+        $.ajax({
+            type: 'get',
+            url: '/test/num',
+            async: false,
+            cache: false,
+            dataType: 'json',
+            data: {
+
+            },
+            success: function(res) {
+                console.log(res.result);
+            },
+            error: function() {
+                alert("错误")
+            }
+        })
+    }
+
+
+    function sendMsg() {
+        var phone = $('#phone').val();
+        console.log("手机号为：" + phone);
+        $.ajax({
+            type: 'get',
+            async: false,
+            cache: false,
+            url: '/miao/send',
+            dataType: 'json',
+            data: {
+                phone: phone
+            },
+            success: function(res) {
+                if (res.result === "00000") {
+                    alert("验证码发送成功");
+                } else if(res.result === "00141") {
+                    alert("同一签名同一手机号码1小时内发送数次应小于等于4,请 1 小时后重试");
+                }
+                else {
+                    alert("验证码发送失败");
+                }
+            },
+            error: function() {
+                alert("服务器错误，请联系管理员");
+            }
+        })
+    }
+
+    function checkMsg() {
+        var code = $('#code').val();
+        console.log("验证码为：" + code);
+        $.ajax({
+            type: 'post',
+            async: false,
+            cache: false,
+            url: '/miao/checkCode',
+            dataType: 'json',
+            data: {
+               code: code
+            },
+            success: function(res) {
+                if (res.result === "success") {
+                    alert("验证码正确");
+                } else {
+                    alert("验证码不一致");
+                }
+            },
+            error: function() {
+                alert("服务器错误，请联系管理员");
+            }
+        })
+    }
+</script>
 </body>
 </html>

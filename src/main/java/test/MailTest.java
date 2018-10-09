@@ -1,7 +1,6 @@
 package test;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import service.MailService;
 
 import javax.annotation.Resource;
@@ -23,7 +22,7 @@ public class MailTest extends BaseJunit{
     @Test
     public void mailHtmlTest() throws Exception {
         String content = "<html>\n" + "<body>\n" +
-                "<h3>hello world 这是第一封 html 邮件！</h3>\n" + "<a href=http://www.baidu.com>激活</a>\n" +
+                "<h3>hello world 这是第一封 html 邮件！</h3>\n" + "<a href=https://www.baidu.com>激活</a>\n" +
                 "</body>\n" + "</html>\n";
         mailService.sendHtmlMail("1441159735@qq.com", "邮件收发测试", content);
         System.out.println("HTML 格式邮件发送成功");
