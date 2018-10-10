@@ -10,14 +10,17 @@
     验证码：<input type="text" id="code" placeholder="请输入验证码" style="width:120px;height:25px"/>
     <button type="button" onclick="checkMsg()">校验验证码</button>
 
-    <input type="text" style="width: 120px;"/>
-
-    <button type="button" onclick="touch()">点我</button>
+    <button type="button" onclick="touch()">点我</button><br/>
+    <div>
+        <span id="list"></span>
+    </div>
 
 <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
 <script>
 
     function touch() {
+        var begin = Date.parse(new Date());
+        console.log("请求开始时间戳：" + begin);
         $.ajax({
             type: 'get',
             url: '/test/num',
@@ -28,7 +31,12 @@
 
             },
             success: function(res) {
-                console.log(res.result);
+                // console.log(res.result);
+                document.getElementById("list").innerHTML = res.result;
+                console.log("请求成功");
+                var end = Date.parse(new Date());
+                console.log("请求完成时间戳：" + end);
+                console.log("请求所用时间为：" + (end - begin));
             },
             error: function() {
                 alert("错误")

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class TestController {
     public static List<Integer> printArr() {
         int j = 0;
         List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 8000000; i++) {
             list.add(i);
         }
         j++;

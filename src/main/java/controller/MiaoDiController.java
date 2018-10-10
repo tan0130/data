@@ -1,7 +1,6 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import entity.Phone;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +18,7 @@ import java.util.HashMap;
  **/
 @Controller
 @RequestMapping("/miao")
-public class MiaodiController {
+public class MiaoDiController {
 
     /**
      * 发送验证码
@@ -31,17 +30,13 @@ public class MiaodiController {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String status = map.get("respCode");
-        System.out.println("status:" + status);
         String checkCode = map.get("checkCode");
-        System.out.println("checkCode:" + checkCode);
+        // 将验证码缓存到 session 中
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(60 * 1); // 设置 session 一分钟内有效,单位是秒
         if (status.trim().equals("00000")) {
             map.put("result", "00000");
-            System.out.println("状态返回成功");
-            // 将验证码缓存到 session 中
-            HttpSession session = request.getSession();
             session.setAttribute("checkCode",checkCode);
-            session.setMaxInactiveInterval(60 * 1); // 设置 session 一分钟内有效,单位是秒
-            System.out.println("checkCode:" + checkCode);
         } else if(status.trim().equals("00141")) {
             map.put("result", "00141");
         } else {
@@ -55,24 +50,18 @@ public class MiaodiController {
      * */
     @RequestMapping(value = "/checkCode", method = RequestMethod.POST)
     @ResponseBody
-    public String checkCode(String code, Phone phone, HttpServletRequest request) throws Exception{
-//        String json;
+    public String checkCode(String code, HttpServletRequest request) throws Exception{
         HashMap<String, String> map = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
         HttpSession session = request.getSession(); // 设置 session
-        String sessioncode = (String)session.getAttribute("checkCode");
-        System.out.println("sessionCode:" + sessioncode);
+        String sessionCode = (String)session.getAttribute("checkCode");
 
-        if ((code).equals(sessioncode)) { // 和缓存比对验证码是否相同
-            // 注册手机号
-//            messageService.add(phone);
+        if ((code).equals(sessionCode)) { // 和缓存比对验证码是否相同
             map.put("result", "success");
         } else {
             map.put("result", "fail");
         }
-
         return objectMapper.writeValueAsString(map);
-
     }
 }

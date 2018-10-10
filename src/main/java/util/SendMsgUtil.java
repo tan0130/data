@@ -24,8 +24,8 @@ public class SendMsgUtil {
 
         // 短信模板
         NameValuePair[] data = {
-                new NameValuePair("Uid", "明割啦123"), // sms 短信通 注册的用户名
-        new NameValuePair("key", "d41d8cd98f00b204e980"), // 密钥
+                new NameValuePair("Uid", "******"), // sms 短信通 注册的用户名
+        new NameValuePair("key", "**************"), // 密钥
         new NameValuePair("smsMob", phone), // 要发送的目标手机号
         new NameValuePair("smsText", "验证码：" + randNum + ",发送")
        };
@@ -50,7 +50,7 @@ public class SendMsgUtil {
         // 获取返回消息
         String result = new String(postMethod.getResponseBodyAsString().getBytes("utf-8"));
         System.out.println(result);
-        // 将返回消息和 4 位数验证码放入 map 里面
+        // 将返回消息和 6 位数验证码放入 map 里面
         hashMap.put("result",result);
         hashMap.put("code",randNum);
 

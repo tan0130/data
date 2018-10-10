@@ -1,8 +1,5 @@
 package util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -16,7 +13,7 @@ public class IndustrySMS {
     private static String operation = "/industrySMS/sendSMS";
 
     private static String accountSid = Config.ACCOUNT_SID;
-    private static String to = "18720996704";
+    private static String to = "";
     private static String param = "123456";
     private static String smsContent = "【易科技】尊敬的用户，您好，登录验证码：";
 
